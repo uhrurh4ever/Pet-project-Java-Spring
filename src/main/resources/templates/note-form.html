@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title> Student Management System </title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+  <style>
+      body{
+    background-color: rgb(31,31,31);
+    
+    }
+  </style>
+
+</head>
+<body>
+		<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+		<!-- Brand -->
+		<a class="navbar-brand" href="#">Student Management System</a>
+	
+		<!-- Toggler/collapsibe Button -->
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+	
+		<!-- Navbar links -->
+		<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<ul class="navbar-nav">
+
+			</ul>
+		</div>
+	</nav>
+
+  <br>
+  <br>
+  
+
+
+  <div class = "container">
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-centre card" style="background-color:rgb(31,31,31); color: white;">
+        <h1 class="text-center"> Create New Note</h1>
+        <div class="card-body">
+          <form th:action="@{/notes}" th:object = "${note}" method = "POST">
+            <div class="form-group">
+              <label> Note name </label>
+              <input
+              type="text"
+              name="name"
+              th:field="*{name}"
+              class="form-control"
+              placeholder="Enter the name of the note "
+              />
+            </div>
+
+            <div class="form-group">
+              <label> Note topic </label>
+              <input
+              type="text"
+              name="topic"
+              th:field="*{topic}"
+              class="form-control"
+              placeholder="Enter the topic of the note"
+              />
+            </div>
+
+            <div class="form-group">
+              <label> Note tags </label>
+              <input
+              type="text"
+              name="tags"
+              th:field="*{tags}"
+              class="form-control"
+              placeholder="Enter the tags of the note"
+              />
+            </div>
+
+            <div class="form-group">
+              <label> Text </label>
+              <textarea id="text" th:field="*{text}"></textarea>
+            </div>
+            
+            
+            <div class="box-footer">
+              <button type="submit" class="btn btn-primary">
+                Submit
+              </button>
+
+              <div class="col-lg-3">
+                <a th:href = "@{/notes}" class="btn btn-primary btn-sm mb-3"> Return </a>
+            </div>
+
+            </div>
+          </form>
+
+          <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+        </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
