@@ -29,7 +29,7 @@ public class Note {
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
-  @Column(unique = true,nullable = false)
+  @Column(nullable = false)
   private String topic;
 
   @Column(unique = true,nullable = false)

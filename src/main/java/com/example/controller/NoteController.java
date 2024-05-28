@@ -21,6 +21,7 @@ import com.example.repository.UserRepository;
 import com.example.service.interfaces.NoteService;
 import com.example.service.interfaces.UserService;
 
+
 @Controller
 @RequestMapping("/notes")
 public class NoteController {
@@ -29,11 +30,11 @@ public class NoteController {
     private UserRepository userRepository;
     private UserService userService;
 
-
-    public NoteController(NoteService noteService,UserService userService, UserRepository userRepository) {
+    public NoteController(NoteService noteService, UserService userService, UserRepository userRepository) {
         this.noteService = noteService;
         this.userService = userService;
         this.userRepository = userRepository;
+
     }
 
     private User getCurrentAuthenticatedUser() {
@@ -46,7 +47,6 @@ public class NoteController {
         }
         return user;
     }
-
 
     @GetMapping
     public String getAllNotes(Model model) {
@@ -63,11 +63,11 @@ public class NoteController {
         User user = getCurrentAuthenticatedUser();
 
         if (!note.getUser().equals(user)) {
-        throw new AccessDeniedException("You do not have permission to access this note");
+            throw new AccessDeniedException("You do not have permission to access this note");
         }
 
         model.addAttribute("note", note);
-        return "note-details"; 
+        return "note-details";
     }
 
     @GetMapping("/new")
@@ -82,26 +82,22 @@ public class NoteController {
         note.setUser(user);
 
         List<Note> existingNotes = noteService.getNotesByUser(user);
-            for (Note existingNote : existingNotes) {
+        for (Note existingNote : existingNotes) {
             if (existingNote.getName().equals(note.getName())) {
-            model.addAttribute("error", "A note with this name already exists. Please choose a different name.");
-            model.addAttribute("note", note);
-            return "note-form";
+                model.addAttribute("error", "A note with this name already exists. Please choose a different name.");
+                model.addAttribute("note", note);
+                return "note-form";
+            }
         }
-    }
 
         if (note.getId() != null) {
-        noteService.updateNote(note);
+            noteService.updateNote(note);
+        } else {
+            noteService.saveNote(note);
         }
-        else {
-        noteService.saveNote(note);
+
+        return "redirect:/notes";
     }
-
-    return "redirect:/notes";
-}
-
-
-
 
 
     @GetMapping("/{id}/edit")
@@ -116,25 +112,20 @@ public class NoteController {
     public String updateNote(@PathVariable Long id, @ModelAttribute Note note, Model model) {
         User user = getCurrentAuthenticatedUser();
         note.setUser(user);
-    
+
         List<Note> existingNotes = noteService.getNotesByUser(user);
         for (Note existingNote : existingNotes) {
-            // Проверяем наличие дубликата, игнорируя текущую редактируемую заметку
-            if ((!existingNote.getId().equals(note.getId()) && existingNote.getName().equals(note.getName()))||
-            (!existingNote.getId().equals(note.getId()) && existingNote.getTopic().equals(note.getTopic()))) {
+            if ((!existingNote.getId().equals(note.getId()) && existingNote.getName().equals(note.getName()))) {
                 model.addAttribute("error", "A note with this name already exists. Please choose a different name.");
                 model.addAttribute("note", note); // Добавить note в модель для возврата введенных данных
                 return "edit-note-form";
             }
         }
-    
-        // Обновляем существующую заметку
+
         noteService.updateNote(note);
-    
+
         return "redirect:/notes";
     }
-
-
 
 
     @GetMapping("/{id}/delete")
