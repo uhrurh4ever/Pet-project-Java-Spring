@@ -1,20 +1,26 @@
 package com.example.service.impl;
 
 import java.util.Collection;
+import java.util.List;
 
-import com.example.model.CardSet;
+import com.example.model.*;
+import com.example.service.interfaces.CardService;
+import com.example.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
 
 import com.example.exceptions.CardNotFoundException;
 import com.example.exceptions.CardSetNotFoundException;
-import com.example.model.Card;
 import com.example.model.CardSet;
 import com.example.repository.CardSetRepository;
 import com.example.service.interfaces.CardSetService;
+import com.example.model.User;
+
 
 import lombok.Getter;
 import lombok.Setter;
 import com.example.repository.CardRepository;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Getter
 @Setter
@@ -25,14 +31,22 @@ public class CardSetServiceImpl implements CardSetService {
 
     private CardRepository cardRepository;
 
+    private UserService userService;
+
+    private CardService cardService;
+
     public CardSetServiceImpl(CardSetRepository cardSetRepository, CardRepository cardRepository) {
         this.cardSetRepository = cardSetRepository;
         this.cardRepository = cardRepository;
     }
 
-    @Override
-    public Collection<CardSet> getAllCardSets() {
-        return cardSetRepository.findAll();
+    @GetMapping
+    public String getAllCardSets(Model model) {
+        User user = userService.getCurrentAuthenticatedUser();
+        List<Note> notes = cardSe.getNotesByUser(user);
+        model.addAttribute("notes", notes);
+        model.addAttribute("username", user.getEmail());
+        return "notes";
     }
 
     @Override

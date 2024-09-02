@@ -2,10 +2,6 @@ package com.example.controller;
 
 import java.util.List;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,20 +33,10 @@ public class NoteController {
 
     }
 
-    private User getCurrentAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = userService.loadUserByUsername(authentication.getName());
-        String email = userDetails.getUsername();
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return user;
-    }
 
     @GetMapping
     public String getAllNotes(Model model) {
-        User user = getCurrentAuthenticatedUser();
+        User user = userService.getCurrentAuthenticatedUser();
         List<Note> notes = noteService.getNotesByUser(user);
         model.addAttribute("notes", notes);
         model.addAttribute("username", user.getEmail());
@@ -60,7 +46,7 @@ public class NoteController {
     @GetMapping("/{id}")
     public String getNoteById(@PathVariable Long id, Model model) throws AccessDeniedException {
         Note note = noteService.getNoteById(id);
-        User user = getCurrentAuthenticatedUser();
+        User user = userService.getCurrentAuthenticatedUser();
 
         if (!note.getUser().equals(user)) {
             throw new AccessDeniedException("You do not have permission to access this note");
@@ -78,7 +64,7 @@ public class NoteController {
 
     @PostMapping
     public String saveNote(@ModelAttribute Note note, Model model) {
-        User user = getCurrentAuthenticatedUser();
+        User user = userService.getCurrentAuthenticatedUser();
         note.setUser(user);
 
         List<Note> existingNotes = noteService.getNotesByUser(user);
@@ -110,7 +96,7 @@ public class NoteController {
 
     @PostMapping("/{id}/update")
     public String updateNote(@PathVariable Long id, @ModelAttribute Note note, Model model) {
-        User user = getCurrentAuthenticatedUser();
+        User user = userService.getCurrentAuthenticatedUser();
         note.setUser(user);
 
         List<Note> existingNotes = noteService.getNotesByUser(user);

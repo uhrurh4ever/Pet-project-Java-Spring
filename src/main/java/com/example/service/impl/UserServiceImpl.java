@@ -7,8 +7,10 @@ import com.example.model.User;
 import com.example.repository.UserRepository;
 import com.example.service.interfaces.UserService;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,8 +24,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-
-    
 
     /**
      * Репозиторий для работы с сущностью User
@@ -97,15 +97,23 @@ public class UserServiceImpl implements UserService {
      *
      * @return Список объектов User, представляющий всех пользователей
      */
-     
+
     @Override
     public List<User> getAll() {
         return userRepository.findAll();
     }
 
-
-
-
+    @Override
+    public User getCurrentAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = loadUserByUsername(authentication.getName());
+        String email = userDetails.getUsername();
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return user;
+    }
 
 
 }
