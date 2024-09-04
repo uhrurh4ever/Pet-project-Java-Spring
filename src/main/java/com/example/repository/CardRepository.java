@@ -1,8 +1,12 @@
 package com.example.repository;
 
+import com.example.model.CardSet;
+import com.example.model.Note;
+import com.example.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.model.Card;
+import java.util.List;
 
-public interface CardRepository extends JpaRepository<Card, Long> {
+public interface CardRepository extends JpaRepository<CardSet,Long> {
+    List<CardSet> findByUser(User user);
 }

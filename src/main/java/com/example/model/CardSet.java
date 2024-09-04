@@ -33,8 +33,8 @@ public class CardSet {
   @JoinColumn(name = "user_id", nullable = false) 
   private User user;
 
-  @Column(name = "topic_id")
-  private Long topicId;
+  @Column(name = "topic", nullable = false)
+  private Long topic;
 
 
   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -44,6 +44,6 @@ public class CardSet {
   private Collection<Card> cards;
   
   private String name;
-  private String descrition;
+  private String description;
 
 }

@@ -1,42 +1,35 @@
 package com.example.service.impl;
 
-import org.springframework.stereotype.Service;
-import com.example.model.Card;
+import com.example.model.CardSet;
+import com.example.model.User;
 import com.example.repository.CardRepository;
 import com.example.service.interfaces.CardService;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Service
 @Getter
 @Setter
-@Service
 public class CardServiceImpl implements CardService {
 
-    private CardRepository cardRepository;
+    CardRepository cardRepository;
 
-    public CardServiceImpl(CardRepository cardRepository) {
-        this.cardRepository = cardRepository;
+    @Override
+    public List<CardSet> getAllCardSets() {
+        return cardRepository.findAll();
     }
 
     @Override
-    public Card saveCard(Card card) {
-        return cardRepository.save(card);
+    public List<CardSet> getCardSetByUser(User user) {
+        return cardRepository.findByUser(user);
     }
 
     @Override
-    public Card getCardById(Long id) {
+    public CardSet getCardSetById(Long id) {
         return cardRepository.findById(id).get();
     }
 
-    @Override
-    public Card updateCard(Card card) {
-        return cardRepository.save(card);
-    }
-
-    @Override
-    public void deleteCardById(Long id) {
-        cardRepository.deleteById(id);
-    }
 }
-

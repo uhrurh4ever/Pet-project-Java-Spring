@@ -1,15 +1,15 @@
 package com.example.service.interfaces;
 
-import com.example.model.Card;
+import com.example.model.CardSet;
+import com.example.model.User;
 
-public interface CardService  {
+import java.util.List;
 
-  Card saveCard(Card card);
 
-  Card getCardById(Long id);
+public interface CardService {
+    List<CardSet> getAllCardSets();
 
-  Card updateCard(Card card);
+    List<CardSet> getCardSetByUser(User user);
 
-  void deleteCardById(Long id);
-
+    CardSet getCardSetById(Long id);
 }
