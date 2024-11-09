@@ -34,7 +34,7 @@ public class CardSet {
   private User user;
 
   @Column(name = "topic", nullable = false)
-  private Long topic;
+  private String topic;
 
 
   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Check-this-out</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: rgb(31, 31, 31);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Навигационная панель -->
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <h4>Card Sets</h4>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav ms-auto">
+
+        </div>
+    </nav>
+
+    <!-- Основной контейнер -->
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <!-- Боковая панель -->
+            <aside class="col-md-3 col-xl-2 bg-dark p-3">
+                <div class="d-flex flex-column align-items-start">
+                    <a href="/" class="d-flex align-items-center mb-3 text-white text-decoration-none">
+                        <span class="fs-5">Menu</span>
+                    </a>
+                    <div class="dropdown mb-3">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                           id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://ukulell.ru/wp-content/uploads/2023/12/default_logo_user-246.jpg"
+                                 alt="user avatar" width="30" height="30" class="rounded-circle">
+                            <span class="mx-1" th:text="${username}"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="#">New project...</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li>
+                                <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                                    <button type="submit" class="dropdown-item">Log out</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <a th:href="@{/cardSets/new}" class="btn btn-primary btn-sm mb-3">New Card Set</a>
+                    <a th:href="@{/notes}" class="btn btn-primary btn-sm mb-3">Retun</a>
+
+                </div>
+            </aside>
+
+            <!-- Основной контент -->
+            <main class="col-md-9 col-xl-10">
+                <div class="row">
+                    <div class="col-md-6 col-lg-4 mb-3" th:each="cardSet : ${cardSets}">
+                        <div class="card" style="background-color: rgb(31,31,31); color: white;">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${cardSet.name}"></h5>
+                                <h6 class="card-subtitle mb-2 text-muted" th:text="${cardSet.topic}"></h6>
+                                <p class="card-text" th:text="${cardSet.description}"></p>
+                                <a th:href="@{/cardSets/{id}/edit(id=${cardSet.id})}" class="btn btn-secondary btn-sm">Edit</a>
+                                <a th:href="@{/cardSets/{id}/delete(id=${cardSet.id})}" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

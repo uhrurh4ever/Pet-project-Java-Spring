@@ -48,7 +48,7 @@ public class RegistrationController {
      *
      * @param registrationDto DTO-объект, содержащий данные регистрации (из формы)
      * @return Перенаправление на страницу регистрации с сообщением об успехе
-     *         или ошибке (в зависимости от результата регистрации)
+     * или ошибке (в зависимости от результата регистрации)
      */
     @PostMapping
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {

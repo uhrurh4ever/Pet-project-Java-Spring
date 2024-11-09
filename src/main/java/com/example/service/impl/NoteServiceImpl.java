@@ -2,6 +2,7 @@ package com.example.service.impl;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.example.model.Note;
@@ -14,14 +15,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @Service
 public class NoteServiceImpl implements NoteService {
 
     private NoteRepository noteRepository;
-
-    public NoteServiceImpl(NoteRepository noteRepository) {
-        this.noteRepository = noteRepository;
-    }
 
     @Override
     public List<Note> getAllNotes() {
@@ -52,5 +50,14 @@ public class NoteServiceImpl implements NoteService {
     public List<Note> getNotesByUser(User user) {
         return noteRepository.findByUser(user);
     }
+
+    @Override
+    public boolean isNoteNameUnique(User user, Note note) {
+        List<Note> existingNotes = getNotesByUser(user);
+        return existingNotes.stream()
+                .noneMatch(existingNote -> !existingNote.getId().equals(note.getId())
+                        && existingNote.getName().equals(note.getName()));
+    }
+
 }
 
