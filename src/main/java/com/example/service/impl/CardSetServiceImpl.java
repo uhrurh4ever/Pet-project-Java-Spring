@@ -1,7 +1,7 @@
 package com.example.service.impl;
 
+import com.example.model.Card;
 import com.example.model.CardSet;
-import com.example.model.Note;
 import com.example.model.User;
 import com.example.repository.CardSetRepository;
 import com.example.service.interfaces.CardSetService;
@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @Service
-public class CardSetImpl implements CardSetService {
+public class CardSetServiceImpl implements CardSetService {
 
     private final CardSetRepository cardSetRepository;
 
@@ -55,4 +55,21 @@ public class CardSetImpl implements CardSetService {
                 .noneMatch(existingCardSet -> !existingCardSet.getId().equals(cardSet.getId())
                         && existingCardSet.getName().equals(cardSet.getName()));
     }
+
+    @Override
+    public CardSet addCardToCardSet(CardSet cardSet, Card card) {
+        if (!cardSet.getCards().contains(card)) {
+            cardSet.getCards().add(card);
+            card.getCardSets().add(cardSet);
+        }
+        return cardSetRepository.save(cardSet);
+    }
+
+    @Override
+    public void deleteCardFromCardSet(Long id) {
+        
+      
+    }
+
+    
 }

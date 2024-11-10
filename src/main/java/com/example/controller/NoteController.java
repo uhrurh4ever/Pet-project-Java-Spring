@@ -35,7 +35,7 @@ public class NoteController {
     }
 
     @GetMapping("/{id}")
-    public String getNoteById(@PathVariable Long id, Model model) throws AccessDeniedException {
+    public String showNoteDetails(@PathVariable Long id, Model model) throws AccessDeniedException {
         Note note = noteService.getNoteById(id);
         User user = userService.getCurrentAuthenticatedUser();
 

@@ -1,7 +1,8 @@
 package com.example.controller;
 
+import com.example.exceptions.AccessDeniedException;
+import com.example.model.Card;
 import com.example.model.CardSet;
-import com.example.model.Note;
 import com.example.model.User;
 
 import java.util.List;
@@ -40,6 +41,20 @@ public class CardSetController {
         model.addAttribute("cardSets", cardSets);
         model.addAttribute("username", user.getEmail());
         return "cardSets";
+    }
+
+    @GetMapping("/{id}")
+    public String showCardSetDetails(@PathVariable Long id, Model model) throws AccessDeniedException {
+        CardSet cardSet = cardSetService.getCardSetById(id);
+        User user = userService.getCurrentAuthenticatedUser();
+
+        if (!cardSet.getUser().equals(user)) {
+            throw new AccessDeniedException("You do not have permission to access this note");
+        }
+        model.addAttribute("cardSet", cardSet);
+        model.addAttribute("cards", cardSet.getCards()); 
+        model.addAttribute("newCard", new Card());
+        return "cardSetDetails";
     }
 
     @PostMapping
@@ -83,5 +98,12 @@ public class CardSetController {
     public String deleteCardSet(@PathVariable Long id) {
         cardSetService.deleteCardSetById(id);
         return "redirect:/cardSets";
+    }
+
+    @PostMapping("/{id}/addCard")
+    public String addCardToCardSet(@PathVariable Long id, @ModelAttribute("newCard") Card Card) {
+        CardSet cardSet = cardSetService.getCardSetById(id);
+        cardSetService.addCardToCardSet(cardSet, Card); 
+        return "redirect:/cardSets/" + id; 
     }
 }

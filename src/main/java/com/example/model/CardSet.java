@@ -40,7 +40,7 @@ public class CardSet {
   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinTable(name = "card_set_cards",
           joinColumns = @JoinColumn(name = "set_id"),
-          inverseJoinColumns = @JoinColumn(name = "card_id"))
+          inverseJoinColumns = @JoinColumn(name = "card_id")) 
   private Collection<Card> cards;
   
   private String name;

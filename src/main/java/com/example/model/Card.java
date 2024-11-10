@@ -1,6 +1,8 @@
 package com.example.model;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,7 +27,7 @@ public class Card {
   private Long id;
 
   @ManyToMany(mappedBy = "cards")
-  private Collection<CardSet> cardSets;
+  private List<CardSet> cardSets = new ArrayList<>();
 
   private String front;
   private String back;

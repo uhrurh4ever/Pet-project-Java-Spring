@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Card Set Details</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body style="background-color: rgb(31, 31, 31); color: white;">
+
+<div class="container mt-5">
+    <h2 th:text="${cardSet.name}">Card Set Name</h2>
+    <p th:text="${cardSet.description}">Card Set Description</p>
+    
+    <hr>
+    
+    <!-- Список карт в CardSet -->
+    <h4>Cards in this Set</h4>
+    <div class="row">
+        <div class="col-md-6 mb-3" th:each="card : ${cards}">
+            <div class="card text-white bg-secondary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${card.front}">Front side</h5>
+                    <p class="card-text" th:text="${card.back}">Back side</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h4>Add a New Card</h4>
+    <form th:action="@{/cardSets/{id}/addCard(id=${cardSet.id})}" th:object="${newCard}" method="post">
+        <div class="mb-3">
+            <label for="front" class="form-label">Front</label>
+            <input type="text" th:field="*{front}" class="form-control" placeholder="Front side of the card" required>
+        </div>
+        <div class="mb-3">
+            <label for="back" class="form-label">Back</label>
+            <input type="text" th:field="*{back}" class="form-control" placeholder="Back side of the card" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Card</button>
+    </form>
+
+    <a th:href="@{/cardSets}" class="btn btn-secondary mt-3">Back to Card Sets</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.example.service.interfaces;
 
+import com.example.model.Card;
 import com.example.model.CardSet;
 import com.example.model.User;
 
@@ -20,4 +21,8 @@ public interface CardSetService {
     void deleteCardSetById(Long id);
 
     boolean isCardSetNameUnique(User user, CardSet cardSet);
+
+    CardSet addCardToCardSet(CardSet cardSet, Card card);
+
+    void deleteCardFromCardSet(Long id);
 }

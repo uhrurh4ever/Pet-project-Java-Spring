@@ -68,8 +68,7 @@
                                 <h5 class="card-title" th:text="${cardSet.name}"></h5>
                                 <h6 class="card-subtitle mb-2 text-muted" th:text="${cardSet.topic}"></h6>
                                 <p class="card-text" th:text="${cardSet.description}"></p>
-                                <a th:href="@{/cardSets/{id}/edit(id=${cardSet.id})}" class="btn btn-secondary btn-sm">Edit</a>
-                                <a th:href="@{/cardSets/{id}/delete(id=${cardSet.id})}" class="btn btn-danger btn-sm">Delete</a>
+                                <a th:href="@{/cardSets/{id}(id=${cardSet.id})}" class="btn btn-primary btn-sm">View Details</a>
                             </div>
                         </div>
                     </div>
