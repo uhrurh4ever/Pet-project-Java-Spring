@@ -5,8 +5,10 @@ import com.example.model.Card;
 import com.example.model.CardSet;
 import com.example.model.User;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.example.service.interfaces.CardSetService;
 import com.example.service.interfaces.UserService;
@@ -35,12 +38,13 @@ public class CardSetController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public String getAllCardSets(Model model) {
         User user = userService.getCurrentAuthenticatedUser();
         List<CardSet> cardSets = cardSetService.getCardSetsByUser(user);
         model.addAttribute("cardSets", cardSets);
         model.addAttribute("username", user.getEmail());
-        return "cardSets";
+        return "cardSets.html";
     }
 
     @GetMapping("/{id}")

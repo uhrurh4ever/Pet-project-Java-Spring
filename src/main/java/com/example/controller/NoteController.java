@@ -3,13 +3,10 @@ package com.example.controller;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.exceptions.AccessDeniedException;
 import com.example.model.Note;
@@ -26,12 +23,14 @@ public class NoteController {
     private final UserService userService;
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public String getAllNotes(Model model) {
         User user = userService.getCurrentAuthenticatedUser();
         List<Note> notes = noteService.getNotesByUser(user);
         model.addAttribute("notes", notes);
         model.addAttribute("username", user.getEmail());
-        return "notes";
+
+        return "notes.html";
     }
 
     @GetMapping("/{id}")
