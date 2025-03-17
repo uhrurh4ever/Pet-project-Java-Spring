@@ -9,3 +9,5 @@
 - Spring Data JPA
 - MySQL
 - Maven
+- Lombok
+- 
